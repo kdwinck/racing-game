@@ -81,5 +81,51 @@ describe('testing auth router', () => {
           expect(res.text.length > 1).toBeTruthy()
         })
     })
+
+    it('should respond 401 if no auth header provided', () => {
+      return superagent.get(`${API_URL}/api/login`)
+        .catch(res => {
+          expect(res.status).toEqual(401)
+        })
+    })
+
+    it('should respond 401 if no basic auth provided', () => {
+      return superagent.get(`${API_URL}/api/login`)
+        .set('Authorization', 'Bearer ')
+        .catch(res => {
+          expect(res.status).toEqual(401)
+        })
+    })
+
+    it('should respond 401 if no username or password provided', () => {
+      return superagent.get(`${API_URL}/api/login`)
+        .set('Authorization', 'Basic ')
+        .catch(res => {
+          expect(res.status).toEqual(401)
+        })
+    })
+
+    it('should respond 401 if no user is found', () => {
+      let mockEncoded = new Buffer('username').toString('base64')
+      return superagent.get(`${API_URL}/api/login`)
+        .set('Authorization', `Basic ${mockEncoded}`)
+        .catch(res => {
+          expect(res.status).toEqual(401)
+        })
+    })
+
+    it('should respond 401 if given an incorrect password', () => {
+      let tempUser
+      return mockUser.createOne()
+        .then(userData => {
+          tempUser = userData.user
+          let mockEncoded = new Buffer(`${tempUser.username}:password}`).toString('base64')
+          return superagent.get(`${API_URL}/api/login`)
+            .set('Authorization', `Basic ${mockEncoded}`)
+        })
+        .catch(res => {
+          expect(res.status).toEqual(401)
+        })
+    })
   })
 })
