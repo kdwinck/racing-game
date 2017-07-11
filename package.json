@@ -3,21 +3,43 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "start-db": "mkdir -p ./db && mongod --dbpath ./db",
+    "stop-db": "killall mongod",
+    "lint": "eslint .",
+    "test": "nyc mocha"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kdwinck/racing-game.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Kyle Winckler",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/kdwinck/racing-game/issues"
   },
-  "homepage": "https://github.com/kdwinck/racing-game#readme"
+  "homepage": "https://github.com/kdwinck/racing-game#readme",
+  "devDependencies": {
+    "eslint": "^4.2.0",
+    "expect": "^1.20.2",
+    "faker": "^4.1.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^3.4.2",
+    "nyc": "^11.0.3"
+  },
+  "dependencies": {
+    "bcrypt": "^1.0.2",
+    "body-parser": "^1.17.2",
+    "cors": "^2.8.3",
+    "dotenv": "^4.0.0",
+    "express": "^4.15.3",
+    "jsonwebtoken": "^7.4.1",
+    "mongoose": "^4.11.1",
+    "morgan": "^1.8.2",
+    "multer": "^1.3.0",
+    "superagent": "^3.5.2",
+    "universalify": "^0.1.0"
+  }
 }
