@@ -22,6 +22,15 @@ describe('testing auth router', () => {
   after(server.stop)
   afterEach(cleanDB)
 
+  describe('testing unregistered route', () => {
+    it('should respond 404', () => {
+      return superagent.get(`${API_URL}/api/unregistered`)
+        .catch(err => {
+          expect(err.status).toEqual(404)
+        })
+    })
+  })
+
   describe('testing POST /api/signup', () => {
     it('should respond with a token', () => {
       return superagent.post(`${API_URL}/api/signup`)
@@ -34,6 +43,24 @@ describe('testing auth router', () => {
           expect(res.status).toEqual(200)
           expect(res.text).toExist()
           expect(res.text.length > 1).toBeTruthy()
+        })
+    })
+
+    it('should respond 400 with no data sent', () => {
+      return superagent.post(`${API_URL}/api/signup`)
+        .send({})
+        .catch(err => {
+          expect(err.status).toEqual(400)
+        })
+    })
+
+    it('should respond 400 with incorrect data sent', () => {
+      return superagent.post(`${API_URL}/api/signup`)
+        .send({
+          username: 'fail'
+        })
+        .catch(err => {
+          expect(err.status).toEqual(400)
         })
     })
   })
