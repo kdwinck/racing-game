@@ -5,11 +5,24 @@ const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
 
+const Profile = require('./profile')
+
 const userSchema = mongoose.Schema({
   username: {type: String, required: true, unique: true},
   email: {type: String, required: true, unique: true},
   passwordHash: {type: String, required: true},
   tokenSeed: {type: String, required: true, unique: true},
+})
+
+userSchema.post('save', function(next) {
+  let profileData = {
+    userID: this._id,
+    username: this.username,
+    email: this.email,
+  }
+
+  new Profile(profileData)
+  next
 })
 
 userSchema.methods.passwordHashCreate = function(password) {
