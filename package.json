@@ -8,7 +8,9 @@
     "start-db": "mkdir -p ./db && mongod --dbpath ./db",
     "stop-db": "killall mongod",
     "lint": "eslint .",
-    "test": "nyc mocha"
+    "test": "nyc mocha",
+    "coverage": "`npm bin`/istanbul cover ./test/runner.js",
+    "coveralls": "npm run-script coverage && node bin/coveralls.js < coverage/lcov.info"
   },
   "repository": {
     "type": "git",
@@ -22,6 +24,7 @@
   },
   "homepage": "https://github.com/kdwinck/racing-game#readme",
   "devDependencies": {
+    "coveralls": "^2.13.1",
     "eslint": "^4.2.0",
     "expect": "^1.20.2",
     "faker": "^4.1.0",
