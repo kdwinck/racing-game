@@ -9,7 +9,7 @@
     "stop-db": "killall mongod",
     "lint": "eslint .",
     "test": "mocha",
-    "cover": "nyc npm test && nyc report --reporter=lcovonly | coveralls"
+    "cover": "nyc npm test && nyc report --reporter=lcovonly -- -R spec && cat ./coverage/lcov.info | coveralls"
   },
   "repository": {
     "type": "git",
